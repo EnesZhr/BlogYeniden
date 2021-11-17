@@ -1,6 +1,7 @@
 ﻿using BlogYeniden.Models;
 using BlogYeniden.Models.Data;
 using BlogYeniden.ViewModels.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,13 +29,16 @@ namespace BlogYeniden.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel loginView)
         {
             if (ModelState.IsValid)
             {
-               if( _db.Users.Any(x => x.Username == loginView.Username && x.Password == loginView.Password))
+                var user = _db.Users.FirstOrDefault(x => x.Username == loginView.Username && x.Password == loginView.Password);
+               if (user != null)
                {
+                    HttpContext.Session.SetString("userId", user.Id.ToString());
+                    HttpContext.Session.SetString("username", user.Username);
                     TempData["LoginSuccess"] = "Giriş Başarılı";
                     return RedirectToAction("Index", "Home");
                }
