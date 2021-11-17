@@ -5,8 +5,8 @@
     string username = HttpContextAccessor.HttpContext.Session.GetString("username");
 }
 
-@if(TempData["LoginSuccess"] != null)
-    {
+@if (TempData["LoginSuccess"] != null)
+{
         <div class="alert alert-primary" role="alert">
             @TempData["LoginSuccess"]
         </div>

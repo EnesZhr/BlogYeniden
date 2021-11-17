@@ -49,6 +49,14 @@ namespace BlogYeniden.Controllers
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("userId");
+            HttpContext.Session.Remove("username");
+
+            return RedirectToAction("Login" , "Auth");
+        }
+
         public IActionResult Register ()
         {
             return View();
